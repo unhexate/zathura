@@ -1640,8 +1640,16 @@ bool position_set(zathura_t* zathura, double position_x, double position_y) {
   zathura_document_set_position_x(document, position_x);
   zathura_document_set_position_y(document, position_y);
 
+  /* note the old position */
+  int current_page_id = zathura_document_get_current_page_number(zathura->document);
+
   /* trigger a 'change' event for both adjustments */
   refresh_view(zathura);
+
+  /* set page number back to old page number
+   * this is a very hacky fix, not sure where refresh_view changes the page number
+   */
+  zathura_document_set_current_page_number(zathura->document, current_page_id);
 
   return true;
 }

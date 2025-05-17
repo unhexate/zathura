@@ -48,7 +48,7 @@ unsigned int position_to_page_number(zathura_document_t* document, double pos_x,
 /**
  * Converts a page number to a position in units relative to the document
  *
- * We can specify where to aliwn the viewport and the page. For instance, xalign
+ * We can specify where to align the viewport and the page. For instance, xalign
  * = 0 means align them on the left margin, xalign = 0.5 means centered, and
  * xalign = 1.0 align them on the right margin.
  *
