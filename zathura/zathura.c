@@ -1674,26 +1674,31 @@ bool position_set(zathura_t* zathura, double position_x, double position_y) {
 
   /* negative position_x mean: use the computed value */
   if (position_x < 0) {
-    position_x       = comppos_x;
     bool zoom_center = false;
     girara_setting_get(zathura->ui.session, "zoom-center", &zoom_center);
 
     /* center horizontally */
     if (adjust_mode == ZATHURA_ADJUST_BESTFIT || adjust_mode == ZATHURA_ADJUST_WIDTH || zoom_center == true) {
-      position_x = 0.5;
+      comppos_x = 0.5;
     }
   }
+  else {
+    comppos_x = position_x;
+  }
 
-  if (position_y < 0) {
-    position_y = comppos_y;
+  if (position_y >= 0) {
+    comppos_y = position_y;
   }
 
   /* set the position */
-  zathura_document_set_position_x(document, position_x);
-  zathura_document_set_position_y(document, position_y);
+  zathura_document_set_position_x(document, comppos_x);
+  zathura_document_set_position_y(document, comppos_y);
 
   /* trigger a 'change' event for both adjustments */
   refresh_view(zathura);
+  if(position_x < 0 && position_y < 0){
+    zathura_document_set_current_page_number(document, page_id);
+  }
 
   return true;
 }

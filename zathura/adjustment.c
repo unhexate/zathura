@@ -103,13 +103,10 @@ void page_number_to_position(zathura_document_t* document, unsigned int page_num
   zathura_document_get_document_size(document, &doc_height, &doc_width);
 
   /* compute the shift to align to the viewport. If the page fits to viewport, just center it. */
-  double shift_x = 0.5, shift_y = 0.5;
+  double shift_x = 0.5;
+  double shift_y = 0.5 + (yalign - 0.5) * ((double)cell_height - (double)view_height) / (double)cell_height;
   if (cell_width > view_width) {
     shift_x = 0.5 + (xalign - 0.5) * ((double)cell_width - (double)view_width) / (double)cell_width;
-  }
-
-  if (cell_height > view_height) {
-    shift_y = 0.5 + (yalign - 0.5) * ((double)cell_height - (double)view_height) / (double)cell_height;
   }
 
   /* compute the position */
