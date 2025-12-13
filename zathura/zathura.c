@@ -1740,10 +1740,13 @@ bool adjust_view(zathura_t* zathura) {
   double zoom       = zathura_document_get_zoom(document);
   double newzoom    = zoom;
 
-  if (adjust_mode == ZATHURA_ADJUST_WIDTH || (adjust_mode == ZATHURA_ADJUST_BESTFIT && page_ratio < view_ratio)) {
+  if (adjust_mode == ZATHURA_ADJUST_WIDTH) {
     newzoom *= (double)view_width / (double)document_width;
   } else if (adjust_mode == ZATHURA_ADJUST_BESTFIT) {
-    newzoom *= (double)view_height / (double)cell_height;
+    double width_scale = (double)view_width / (double)document_width;
+    double rows_from_width = (double)view_height / ((double)cell_height * width_scale);
+    unsigned int rows = (unsigned int)MAX(1, (int)ceil(rows_from_width));
+    newzoom *= ((double)view_height) / ((double)cell_height * (double)rows);
   } else {
     goto error_ret;
   }
